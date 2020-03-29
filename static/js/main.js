@@ -158,6 +158,10 @@ $(function() {
         var card = $(this);
         card.toggleClass('flipped');
     });
+    $('#board .word-card').on('touch', function() {
+        var card = $(this);
+        card.toggleClass('flipped');
+    });
 
     $('#copy-url').click(function(e) {
         e.preventDefault();
