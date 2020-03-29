@@ -1,0 +1,111 @@
+
+body {
+    padding-bottom: 2em;
+}
+
+#board {
+    border: 1px solid rgb(179, 158, 137);
+}
+
+#board tr, #board td {
+    border: 1px solid rgb(179, 158, 137);
+}
+
+#board td {
+    padding: .25em;
+}
+#board td,
+.word-card .upper .rounded-circle {
+    background: rgb(228, 214, 185);
+}
+
+.word-card {
+    width: 100%;
+    height: 100%;
+    padding: .5em;
+    margin: 0;
+    background: rgb(228, 208, 183);
+    border: 3px solid rgb(179, 158, 137);
+    border-radius: 10px;
+    text-align: center;
+    user-select: none;
+}
+
+.word-card .upper {
+    padding-bottom: .5em;
+}
+
+.word-card .upper .rounded-circle {
+    display: inline-block;
+    height: 1.5em;
+    width: 1.5em;
+    border: 3px solid rgb(179, 158, 137);
+}
+
+.word-card .word-field {
+    padding: 4px;
+    margin: 0;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.word-card .word-field.main-word {
+    background: rgb(219, 224, 253);
+    border: 3px solid rgb(233, 231, 238);
+}
+
+.word-card .word-field.inverse {
+    margin-right: 4em;
+    padding-bottom: .75em;
+    /*background: rgb(214, 211, 232);*/
+    border-top: 3px solid rgb(204, 190, 188);
+
+    color: rgb(113, 113, 114);
+    font-style: italic;
+    font-size: 0.8em;
+    line-height: 0.8em;
+
+    -webkit-transform:rotate(-180deg);
+    -moz-transform:rotate(-180deg);
+    -o-transform:rotate(-180deg);
+    transform:rotate(-180deg);
+}
+
+.word-card.flipped * {
+    visibility: hidden;
+}
+
+.word-card.flipped {
+    background-size: cover;
+}
+.word-card.flipped.male {
+    background-image: url('img/civilian-male.jpg');
+}
+.word-card.flipped.female {
+    background-image: url('img/civilian-female.jpg');
+}
+
+.word-card.flipped.blue {
+    background-color: blue;
+}
+.word-card.flipped.blue.male {
+    background-image: url('img/blue-male.jpg');
+}
+.word-card.flipped.blue.female {
+    background-image: url('img/blue-female.jpg');
+}
+
+.word-card.flipped.red {
+    background-color: red;
+}
+.word-card.flipped.red.male {
+    background-image: url('img/red-male.jpg');
+}
+.word-card.flipped.red.female {
+    background-image: url('img/red-female.jpg');
+}
+
+.word-card.flipped.assassin {
+    background-color: black;
+    background-image: url('img/assassin.jpg');
+}
