@@ -29,11 +29,36 @@ function getUrlVals() {
     var vals = {};
     for (var i = 0, len = s.length; i < len; i++) {
         var kv = s[i].split('=');
-        if (kv[1] != undefined) {
-            vals[kv[0]] = parseInt(kv[1]);
+        var k = kv[0];
+        var v = kv[1];
+        if (v != undefined) {
+            vals[k] = k == 's' ? parseInt(v) : v;
         }
     }
     return vals;
+}
+
+function createCard() {
+    var card = $('<div class="alert word-card" />');
+
+    var upper = $('<div class="upper" />');
+
+    upper.append($('<div class="codemaster-symbol alert text-center" />')
+        .append('<i class="far fa-circle" />')
+        .append('<i class="far fa-square" />')
+        .append('<span>&times;</span>'));
+
+    var circ = $('<div />').append($('<span class="rounded-circle" />').append());
+    upper.append(circ);
+
+    upper.append($('<div class="word-field inverse" />'));
+
+    upper.appendTo(card);
+
+    var main = $('<div class="alert word-field main-word" />');
+    main.appendTo(card);
+
+    return card;
 }
 
 function setup() {
@@ -58,18 +83,7 @@ function setup() {
 
     tbl.find('td').each(function() {
         var td = $(this).css('width', '20%').html('');
-
-        var card = $('<div class="alert word-card" />');
-
-        var upper = $('<div class="upper" />');
-        var circ = $('<div />').append($('<span class="rounded-circle" />').append());
-        upper.append(circ)
-        upper.append($('<div class="word-field inverse" />'));
-        upper.appendTo(card);
-
-        var main = $('<div class="alert word-field main-word" />');
-        main.appendTo(card);
-
+        var card = createCard();
         card.appendTo(td);
     });
 
@@ -77,8 +91,13 @@ function setup() {
 
     var words = [];
 
-    cards.each(function() {
-        var txt = corpus.splice(rand(corpus.length), 1);
+    cards.each(function(i) {
+        var txt = corpus.splice(rand(corpus.length), 1)[0];
+
+        var k = 'w' + (i + 1);
+        if (urlVals[k] != undefined) {
+            txt = urlVals[k];
+        }
         words.push(txt);
 
         $(this).attr('id', 'word-' + txt).find('.word-field').text(txt);
@@ -106,9 +125,13 @@ function setup() {
     w = words.splice(i, 1);
     if (rand(10) < 5) {
         deck[w] = 'red';
+        tbl.removeClass('blue-double-agent');
+        tbl.addClass('red-double-agent');
     }
     else {
         deck[w] = 'blue';
+        tbl.removeClass('red-double-agent');
+        tbl.addClass('blue-double-agent');
     }
 
     while (words.length > 0) {
@@ -126,21 +149,50 @@ function setup() {
             card.addClass('male');
         }
     });
-
-
-    cards.dblclick(function() {
-        var card = $(this);
-        card.toggleClass('flipped');
-    });
-
-    if (urlVals.c === 1) {
-        $('body').addClass('codemaster');
-    }
-    else {
-        $('body').removeClass('codemaster');
-    }
 }
 
 $(function() {
     setup();
+
+    $('#board .word-card').dblclick(function() {
+        var card = $(this);
+        card.toggleClass('flipped');
+    });
+
+    $('#copy-url').click(function(e) {
+        e.preventDefault();
+
+        var el = document.createElement('textarea');
+        el.setAttribute('readonly', '');
+        el.style.position = 'absolute';
+        el.style.left = '-9999px';
+        el.value = window.location.href;
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand('copy');
+        document.body.removeChild(el);
+
+        var me = $(this);
+        me.popover('show');
+
+        setTimeout(function() {
+            me.popover('hide')
+        }, 500);
+    });
+
+    var codemaster = false;
+
+    $('#codemaster-toggle').click(function(e) {
+        e.preventDefault();
+
+        if (!codemaster) {
+            codemaster = confirm('Are you sure you want to show the codemaster view?\n' +
+                'Once you do, there\'s no turning back!');
+            if (!codemaster) {
+                return;
+            }
+        }
+
+        $('body').toggleClass('codemaster');
+    });
 });

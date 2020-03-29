@@ -11,6 +11,9 @@
     
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/all.min.css') }}">
+    <link rel="stylesheet" href="./css/all.min.css">
+
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
     <link rel="stylesheet" href="./css/main.css">
 </head>
@@ -22,6 +25,13 @@
                 <span class="navbar-brand mr-auto">CodeWords</span>
 
                 <span>
+                    <a id="copy-url" href="#" class="btn btn-sm btn-outline-warning"
+                        data-container="body" data-toggle="popover" data-placement="left"
+                        data-content="Copied"
+                    >
+                        <i class="fa fa-copy"></i> Copy Game URL
+                    </a>
+
                     <a id="randomize" href="?randomize" class="btn btn-sm btn-outline-warning">Randomize!</a>
                 </span>
             </div>
@@ -31,13 +41,24 @@
     <div id="root" class="container">
 
         <table id="board" class="table">
+            <thead>
+                <tr>
+                    <th colspan="7" class="text-center">
+                        <span class="advantage-indicator align-bottom"></span>
+                    </th>
+                </tr>
+            </thead>
             <tbody>
                 <tr>
+                    <th rowspan="2">
+                    </th>
                     <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
+                    <th rowspan="2">
+                    </th>
                 </tr>
                 <tr>
                     <td></td>
@@ -47,18 +68,28 @@
                     <td></td>
                 </tr>
                 <tr>
+                    <th class="text-right">
+                        <span class="advantage-indicator align-middle"></span>
+                    </th>
                     <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
+                    <th class="text-left">
+                        <span class="advantage-indicator align-middle"></span>
+                    </th>
                 </tr>
                 <tr>
+                    <th rowspan="2">
+                    </th>
                     <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
+                    <th rowspan="2">
+                    </th>
                 </tr>
                 <tr>
                     <td></td>
@@ -68,9 +99,22 @@
                     <td></td>
                 </tr>
             </tbody>
+            <tfoot>
+                <tr>
+                    <th colspan="7" class="text-center">
+                        <span class="advantage-indicator align-top"></span>
+                    </th>
+                </tr>
+            </tfoot>
         </table>
 
         <div id="master-board">
+        </div>
+
+        <div class="text-right pt-1 pb-3">
+            <a id="codemaster-toggle" href="#" class="btn btn-outline-danger">
+                Toggle CodeMaster View
+            </a>
         </div>
 
         <footer>

@@ -3,11 +3,36 @@ body {
     padding-bottom: 2em;
 }
 
-#board {
-    border: 1px solid rgb(179, 158, 137);
+#board thead, #board tfoot {
+    line-height: 1em;
+}
+#board th {
+    border: none;
+    padding: 0;
+    margin: 0;
 }
 
-#board tr, #board td {
+#board .advantage-indicator {
+    display: inline-block;
+    padding: .25em 4em;
+}
+#board tbody .advantage-indicator {
+    padding: 4em .25em;
+    margin-top: .2em;
+    margin-bottom: .2em;
+}
+#board.blue-double-agent .advantage-indicator {
+    background-color: rgb(43, 160, 221);
+}
+#board.red-double-agent .advantage-indicator {
+    background-color: rgb(243, 41, 78);
+}
+
+#board tbody {
+    /*border: 2px solid rgb(179, 158, 137);*/
+}
+
+#board tbody td {
     border: 1px solid rgb(179, 158, 137);
 }
 
@@ -32,6 +57,7 @@ body {
 }
 
 .word-card .upper {
+    position: relative;
     padding-bottom: .5em;
 }
 
@@ -86,7 +112,7 @@ body {
 }
 
 .word-card.flipped.blue {
-    background-color: blue;
+    background-color: rgb(0, 60, 114);
 }
 .word-card.flipped.blue.male {
     background-image: url('img/blue-male.jpg');
@@ -96,7 +122,7 @@ body {
 }
 
 .word-card.flipped.red {
-    background-color: red;
+    background-color: rgb(120, 14, 4);
 }
 .word-card.flipped.red.male {
     background-image: url('img/red-male.jpg');
@@ -108,4 +134,63 @@ body {
 .word-card.flipped.assassin {
     background-color: black;
     background-image: url('img/assassin.jpg');
+}
+
+
+#codemaster-toggle {
+    margin-right: .5em;
+}
+
+.codemaster-symbol {
+    display: none;
+    position: absolute;
+    right: 0;
+    height: 2em;
+    width: 2em;
+    margin: 0;
+    padding: 0;
+    color: white;
+    font-weight: bold;
+    border: 1px solid rgb(179, 158, 137);
+    box-sizing: border-box;
+}
+.codemaster-symbol > i, .codemaster-symbol > span {
+    display: none;
+}
+
+.word-card.blue .codemaster-symbol {
+    background-color: rgb(43, 160, 221);
+    border: none;
+}
+.word-card.blue .codemaster-symbol .fa-circle {
+    display: block;
+    line-height: 2rem;
+}
+
+.word-card.red .codemaster-symbol {
+    background-color: rgb(243, 41, 78);
+    border: none;
+}
+.word-card.red .codemaster-symbol .fa-square {
+    display: block;
+    line-height: 2rem;
+
+    -webkit-transform:rotate(-45deg);
+    -moz-transform:rotate(-45deg);
+    -o-transform:rotate(-45deg);
+    transform:rotate(-45deg);
+}
+
+.word-card.assassin .codemaster-symbol {
+    background-color: black;
+    border: none;
+}
+.word-card.assassin .codemaster-symbol span {
+    display: block;
+    font-size: 2em;
+    line-height: 1.5rem;
+}
+
+.codemaster .codemaster-symbol {
+    display: block;
 }
