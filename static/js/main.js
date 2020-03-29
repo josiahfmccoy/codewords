@@ -61,7 +61,7 @@ function createCard() {
     return card;
 }
 
-function setup() {
+function setup(dictionary) {
     var urlVals = getUrlVals();
     console.log(urlVals);
 
@@ -152,7 +152,11 @@ function setup() {
 }
 
 $(function() {
-    setup();
+    var dictionary = [];
+    $.ajax({url: dictURL}).done(function(content) {
+        dictionary = content.split('\n').filter(x => x.trim() != '');
+        setup(dictionary);
+    });
 
     $('#board .word-card').dblclick(function() {
         var card = $(this);
