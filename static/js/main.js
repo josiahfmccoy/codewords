@@ -1,4 +1,5 @@
-function SeedRandom(state1,state2){
+//https://stackoverflow.com/questions/424292/seedable-javascript-random-number-generator/424389
+function SeedRandom(state1, state2){
     var mod1=4294967087
     var mul1=65539
     var mod2=4294965887
@@ -22,6 +23,16 @@ function SeedRandom(state1,state2){
     return random
 }
 
+function randomSeed(len) {
+    var n = len - 1;
+    var start = 1;
+    while (n > 0) {
+        start *= 10;
+        n--;
+    }
+    return Math.floor(start + Math.random() * start * 9);
+}
+
 function getUrlVals() {
     var s = window.location.search.slice(1);
     s = s.split('&');
@@ -32,7 +43,7 @@ function getUrlVals() {
         var k = kv[0];
         var v = kv[1];
         if (v != undefined) {
-            vals[k] = k == 's' ? parseInt(v) : v;
+            vals[k] = k == 's' || k == 'm' ? parseInt(v) : v;
         }
     }
     return vals;
@@ -43,10 +54,10 @@ function createCard() {
 
     var upper = $('<div class="upper" />');
 
-    upper.append($('<div class="codemaster-symbol alert text-center" />')
+    card.append($('<div class="codemaster-symbol alert text-center" />')
         .append('<i class="far fa-circle" />')
         .append('<i class="far fa-square" />')
-        .append('<span>&times;</span>'));
+        .append('<span>&times;</span><em>&nbsp;</em>'));
 
     var circ = $('<div />').append($('<span class="rounded-circle" />').append());
     upper.append(circ);
@@ -66,20 +77,39 @@ function setup(dictionary) {
     console.log(urlVals);
 
     if (urlVals.s == undefined) {
-        urlVals.s = Math.floor(100000000 + Math.random() * 900000000);
+        urlVals.s = randomSeed(9);
         var q = '?';
         $.each(urlVals, function(k, v) { q += k + '=' + v});
         window.location.search = q;
     }
 
-    $('#randomize').attr(
-        'href', '?s=' + Math.floor(100000000 + Math.random() * 900000000));
+    var rand = SeedRandom(urlVals.s, urlVals.s);
+
+    $('#randomize').attr('href', '?s=' + randomSeed(9));
+
+    var codemasterSeed = Math.floor(1000000 + (rand(1000000) / 1000000) * 9000000);
+    var codemasterUrl = window.location.href + '&m=' + codemasterSeed
+
+    if (urlVals.m === codemasterSeed) {
+        $('body').addClass('codemaster');
+    }
+    else {
+        $('body').removeClass('codemaster');
+        $('#codemaster-url-show').attr('href', codemasterUrl).removeClass('d-none');
+        $('.codemaster-url').attr('value', codemasterUrl);
+
+        $('#codemaster-url-show').popover({
+            container: 'body',
+            html: true,
+            title: 'Codemaster URL',
+            content: $('#codemaster-form')[0].outerHTML,
+            container: 'body'
+        });
+    }
 
     var corpus = dictionary.slice();
 
-    var rand = SeedRandom(urlVals.s, urlVals.s);
-
-    var tbl = $('#board');
+    var tbl = $('#board').removeClass('d-none');
 
     tbl.find('td').each(function() {
         var td = $(this).css('width', '20%').html('');
@@ -98,9 +128,13 @@ function setup(dictionary) {
         if (urlVals[k] != undefined) {
             txt = urlVals[k];
         }
+        txt = txt.trim();
         words.push(txt);
 
-        $(this).attr('id', 'word-' + txt).find('.word-field').text(txt);
+        var me = $(this);
+        me.attr('id', 'word-' + txt);
+        me.find('.word-field').text(txt);
+        me.find('.codemaster-symbol').attr('title', txt);
     });
 
     var deck = {};
@@ -184,23 +218,34 @@ $(function() {
         me.popover('show');
 
         setTimeout(function() {
-            me.popover('hide')
+            me.popover('hide');
         }, 500);
     });
 
     var codemaster = false;
 
-    $('#codemaster-toggle').click(function(e) {
+    $('#codemaster-url-show').click(function(e) {
+        e.preventDefault();
+        $(this).popover('show');
+    });
+    $('body').on('click', '.codemaster-url-copy', function(e) {
         e.preventDefault();
 
-        if (!codemaster) {
-            codemaster = confirm('Are you sure you want to show the codemaster view?\n' +
-                'Once you do, there\'s no turning back!');
-            if (!codemaster) {
-                return;
-            }
-        }
+        var el = document.createElement('textarea');
+        el.setAttribute('readonly', '');
+        el.style.position = 'absolute';
+        el.style.left = '-9999px';
+        el.value = $('#codemaster-url-show').attr('href');
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand('copy');
+        document.body.removeChild(el);
 
-        $('body').toggleClass('codemaster');
+        var me = $(this);
+        me.find('.fa').removeClass('fa-copy').addClass('fa-check');
+
+        setTimeout(function() {
+            me.find('.fa').removeClass('fa-check').addClass('fa-copy');
+        }, 300);
     });
 });

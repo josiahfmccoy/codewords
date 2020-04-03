@@ -12,10 +12,12 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/all.min.css') }}">
-    <link rel="stylesheet" href="./css/all.min.css">
-
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+
+    <!-- {# Ignore if running through flask -->
+    <link rel="stylesheet" href="./css/all.min.css">
     <link rel="stylesheet" href="./css/main.css">
+    <!-- #} -->
 </head>
 
 <body>
@@ -41,7 +43,7 @@
     <div id="root" class="container">
 
         <div class="table-responsive" style="padding: .1px;">
-            <table id="board" class="table">
+            <table id="board" class="table d-none">
                 <thead>
                     <tr>
                         <th colspan="7" class="text-center">
@@ -110,12 +112,23 @@
             </table>
         </div>
 
-        <div id="master-board">
-        </div>
-
-        <div class="text-right pt-1 pb-3">
-            <a id="codemaster-toggle" href="#" class="btn btn-outline-danger">
-                Toggle CodeMaster View
+        <div class="text-center py-2 pb-3">
+            <div class="d-none">
+                <form id="codemaster-form">
+                    <div class="form-group form-row">
+                        <div class="col pr-3">
+                            <input type="text" class="form-control codemaster-url" />
+                        </div>
+                        <div class="col-auto">
+                            <a href="#" class="btn btn-info codemaster-url-copy">
+                                <i class="fa fa-copy"></i>
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <a id="codemaster-url-show" href="#" class="btn btn-warning d-none">
+                Show Codemaster URL
             </a>
         </div>
 
@@ -141,5 +154,8 @@
     </script>
 
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+    <!-- {# Ignore if running through flask -->
     <script src="js/main.js"></script>
+    <!-- #} -->
 </body>

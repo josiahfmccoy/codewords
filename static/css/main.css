@@ -10,6 +10,7 @@ body {
     border: none;
     padding: 0;
     margin: 0;
+    vertical-align: middle;
 }
 
 #board .advantage-indicator {
@@ -18,8 +19,6 @@ body {
 }
 #board tbody .advantage-indicator {
     padding: 4em .25em;
-    margin-top: .2em;
-    margin-bottom: .2em;
 }
 #board.blue-double-agent .advantage-indicator {
     background-color: rgb(43, 160, 221);
@@ -143,18 +142,15 @@ body {
 
 .codemaster-symbol {
     display: none;
-    position: absolute;
-    right: 0;
     height: 2em;
     width: 2em;
     margin: 0;
     padding: 0;
     color: white;
     font-weight: bold;
-    border: 1px solid rgb(179, 158, 137);
     box-sizing: border-box;
 }
-.codemaster-symbol > i, .codemaster-symbol > span {
+.codemaster-symbol > i, .codemaster-symbol > span, .codemaster-symbol > em {
     display: none;
 }
 
@@ -182,7 +178,7 @@ body {
 }
 
 .word-card.assassin .codemaster-symbol {
-    background-color: black;
+    background-color: rgb(80, 80, 80);
     border: none;
 }
 .word-card.assassin .codemaster-symbol span {
@@ -191,6 +187,43 @@ body {
     line-height: 1.5rem;
 }
 
-.codemaster .codemaster-symbol {
+.word-card.civilian .codemaster-symbol {
+    background-color: rgb(179, 158, 137);
+}
+.word-card.civilian .codemaster-symbol em {
     display: block;
+}
+
+.codemaster .codemaster-symbol {
+    display: inline-block !important;
+}
+
+.codemaster .word-card {
+    border: none;
+    background: transparent;
+    padding: 0;
+}
+.codemaster .word-card > * {
+    display: none;
+}
+
+.codemaster #board {
+    width: 10em;
+    margin: 0 auto;
+}
+.codemaster #board td {
+    border: black;
+    background: black;
+    vertical-align: middle;
+    border: .5em solid black;
+}
+.codemaster #board thead th, .codemaster #board tfoot th {
+    padding: .25em 0;
+}
+
+.codemaster #board .advantage-indicator {
+    padding: .25em 1em;
+}
+.codemaster #board tbody .advantage-indicator {
+    padding: 1em .25em;
 }
