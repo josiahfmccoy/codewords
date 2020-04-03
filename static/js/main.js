@@ -103,6 +103,7 @@ function setup(dictionary) {
             html: true,
             title: 'Codemaster URL',
             content: $('#codemaster-form')[0].outerHTML,
+            position: 'top',
             container: 'body'
         });
     }
