@@ -72,6 +72,25 @@ function createCard() {
     return card;
 }
 
+function encode(seed, password) {
+    var coded = seed;
+    for (var i = 0; i < password.length; i++) {
+        if (i % 4 == 0) {
+            coded += password.charAt(i).charCodeAt();
+        }
+        else if (i % 3 == 0) {
+            coded *= (password.charAt(i).charCodeAt() || 1);
+        }
+        else if (i % 2 == 0) {
+            coded -= password.charAt(i).charCodeAt();
+        }
+        else {
+            coded /= (password.charAt(i).charCodeAt() || 1);
+        }
+    }
+    return Math.round(Math.abs(coded));
+}
+
 function setup(dictionary) {
     var urlVals = getUrlVals();
     console.log(urlVals);
@@ -88,15 +107,31 @@ function setup(dictionary) {
     $('#randomize').attr('href', '?s=' + randomSeed(9));
 
     var codemasterSeed = Math.floor(1000000 + (rand(1000000) / 1000000) * 9000000);
-    var codemasterUrl = window.location.href + '&m=' + codemasterSeed
+    var codemasterUrl = window.location.href + '&m=' + codemasterSeed;
 
-    if (urlVals.m === codemasterSeed) {
+    if (urlVals.m !== undefined) {
+        while (true) {
+            var pwd = prompt('Enter the password your gamemaster provided you with:');
+            if (!pwd) {
+                window.location.href = window.location.pathname + '?s=' + urlVals.s;
+            }
+
+            if (urlVals.m != encode(codemasterSeed, pwd)) {
+                alert('Incorrect password');
+            }
+            else {
+                break;
+            }
+        }
+
         $('body').addClass('codemaster');
     }
     else {
         $('body').removeClass('codemaster');
-        $('#codemaster-url-show').attr('href', codemasterUrl).removeClass('d-none');
-        $('.codemaster-url').attr('value', codemasterUrl);
+        $('#codemaster-url-show').attr({
+            href: codemasterUrl,
+            'data-code': codemasterSeed
+        }).removeClass('d-none');
 
         $('#codemaster-url-show').popover({
             container: 'body',
@@ -228,6 +263,18 @@ $(function() {
     $('#codemaster-url-show').click(function(e) {
         e.preventDefault();
         $(this).popover('show');
+
+        $('.codemaster-url').attr('value', this.href);
+        $('.codemaster-password').val('').change();
+    });
+    $('body').on('keyup', '.codemaster-password', function(e) {
+        var codemasterSeed = parseInt($('#codemaster-url-show').attr('data-code'));
+        var codemasterUrl = (
+            window.location.href + '&m=' + encode(codemasterSeed, this.value)
+        );
+        
+        $('#codemaster-url-show').attr('href', codemasterUrl);
+        $('.codemaster-url').attr('value', codemasterUrl);
     });
     $('body').on('click', '.codemaster-url-copy', function(e) {
         e.preventDefault();
