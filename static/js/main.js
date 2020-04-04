@@ -110,7 +110,7 @@ function setup(dictionary) {
     var codemasterUrl = window.location.href + '&m=' + codemasterSeed;
 
     if (urlVals.m !== undefined) {
-        while (true) {
+        while (true && urlVals.m != codemasterSeed) {
             var pwd = prompt('Enter the password your gamemaster provided you with:');
             if (!pwd) {
                 window.location.href = window.location.pathname + '?s=' + urlVals.s;
@@ -272,7 +272,7 @@ $(function() {
         var codemasterUrl = (
             window.location.href + '&m=' + encode(codemasterSeed, this.value)
         );
-        
+
         $('#codemaster-url-show').attr('href', codemasterUrl);
         $('.codemaster-url').attr('value', codemasterUrl);
     });
